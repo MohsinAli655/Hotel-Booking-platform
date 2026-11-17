@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harbourline Hotel – Book your stay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF3F4;--surface:#fff;--ink:#10272B;--muted:#53676B;--line:#D3DEE0;--brand:#0F4C52;--brand-ink:#fff;--sun:#F2B134;--ok:#1B7F4B;--bad:#B3322B;--r:14px;
+--serif:"Fraunces",Georgia,serif;--sans:"Instrument Sans",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0B1A1D;--surface:#122A2E;--ink:#E8F1F2;--muted:#9DB3B7;--line:#25444A;--brand:#5CC6CC;--brand-ink:#06292C;--ok:#5FD39A;--bad:#FF8F87}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{background:var(--brand);color:var(--brand-ink);padding:18px 0 96px}
+@media (prefers-color-scheme:dark){header.top{background:#0F3A3F;color:#E8F1F2}}
+.nav{display:flex;justify-content:space-between;align-items:center;font-family:var(--serif);font-weight:700;font-size:1.25rem}
+.nav small{font:500 .9rem var(--sans);opacity:.85}
+.hero{padding:44px 0 0;max-width:640px}
+.hero h1{font:700 clamp(2rem,5vw,3.25rem)/1.1 var(--serif);margin:0 0 12px}
+.hero p{margin:0;opacity:.9;font-size:1.05rem}
+.search{background:var(--surface);border-radius:var(--r);padding:18px;margin-top:-64px;box-shadow:0 10px 30px rgba(8,30,34,.18);display:grid;grid-template-columns:repeat(4,1fr) auto;gap:14px;align-items:end}
+.f label{display:block;font-size:.85rem;font-weight:600;margin-bottom:4px;color:var(--muted)}
+.f input,.f select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-height:44px}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-height:44px;overflow:hidden}
+.stepper button{width:44px;align-self:stretch;border:0;background:transparent;font-size:1.2rem;cursor:pointer}
+.stepper button:disabled{opacity:.3;cursor:not-allowed}
+.stepper span{flex:1;text-align:center;font-weight:600}
+.btn{border:0;border-radius:10px;padding:11px 20px;min-height:44px;font-weight:600;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+.btn.sun{background:var(--sun);color:#2A1D00}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.err{color:var(--bad);font-size:.9rem;margin:8px 0 0}
+.stay{margin:16px 0 0;color:var(--muted)}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:24px;margin:24px 0 60px}
+.filters{background:var(--surface);border-radius:var(--r);padding:18px;align-self:start;position:sticky;top:12px}
+.filters h2,.results h2{font:700 1.15rem var(--serif);margin:0 0 12px}
+.filters fieldset{border:0;padding:0;margin:0 0 16px}
+.filters legend{font-weight:600;margin-bottom:6px;padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:99px;padding:6px 12px;cursor:pointer;font-size:.9rem}
+.chip[aria-pressed=true]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.chk{display:flex;gap:8px;align-items:center;padding:3px 0;font-size:.95rem}
+.chk input{width:18px;height:18px;accent-color:var(--brand)}
+input[type=range]{width:100%;accent-color:var(--brand)}
+.rhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.rhead select{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.cards{display:grid;gap:18px}
+.card{background:var(--surface);border-radius:var(--r);overflow:hidden;display:grid;grid-template-columns:260px 1fr}
+.card.out{opacity:.7}
+.pic{min-height:200px;display:flex;align-items:flex-end;padding:12px;font-size:3.2rem;position:relative}
+.tag{position:absolute;top:12px;left:12px;font-size:.8rem;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.92);color:#10272B}
+.body{padding:18px;display:flex;flex-direction:column;gap:10px}
+.body h3{font:700 1.3rem var(--serif);margin:0}
+.body p{margin:0;color:var(--muted);font-size:.95rem}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.badge{font-size:.82rem;padding:3px 10px;border-radius:99px;border:1px solid var(--line);background:var(--bg)}
+.buy{margin-top:auto;display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+.price b{font:700 1.7rem var(--serif)}
+.price span{color:var(--muted);font-size:.9rem}
+.price div{font-size:.88rem;color:var(--muted)}
+.stat{font-size:.88rem;font-weight:600}
+.stat.ok{color:var(--ok)}.stat.warn{color:#9A6500}.stat.bad{color:var(--bad)}
+@media (prefers-color-scheme:dark){.stat.warn{color:var(--sun)}}
+.empty{background:var(--surface);border-radius:var(--r);padding:36px;text-align:center}
+.scrim{position:fixed;inset:0;background:rgba(5,20,23,.6);display:grid;place-items:center;padding:16px;z-index:10}
+.modal{background:var(--surface);border-radius:var(--r);width:min(520px,100%);max-height:92vh;overflow:auto;padding:22px;animation:pop .18s ease-out}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.modal{animation:none}}
+.modal h2{font:700 1.4rem var(--serif);margin:0 0 4px}
+.sum{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:14px 0}
+.row{display:flex;justify-content:space-between;padding:3px 0;font-size:.95rem}
+.row.total{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-weight:700;font-size:1.1rem}
+.mf{display:grid;gap:10px;margin:12px 0}
+.mf input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-height:44px}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.done{text-align:center}
+.done .tick{width:60px;height:60px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:1.8rem;margin:4px auto 10px}
+.ref{font:700 1.3rem var(--serif);letter-spacing:.04em}
+@media (max-width:900px){.search{grid-template-columns:1fr 1fr}.search .btn{grid-column:1/-1}.layout{grid-template-columns:1fr}.filters{position:static}}
+@media (max-width:640px){.card{grid-template-columns:1fr}.pic{min-height:130px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>
+const { useState, useMemo, useEffect, useRef } = React;
+const html = htm.bind(React.createElement);
+
+/* ---------- Data ---------- */
+const AMEN = { wifi:"📶 Free Wi-Fi", breakfast:"🥐 Breakfast", pool:"🏊 Pool access", ac:"❄️ Air conditioning",
+  kitchen:"🍳 Kitchenette", spa:"💆 Spa credit", parking:"🚗 Parking", balcony:"🌅 Balcony" };
+const ROOMS = [
+  { id:1, name:"Garden Standard", type:"Standard", price:120, sleeps:2, size:24, bed:"1 queen bed", icon:"🌿", g:["#9ED8B5","#3E8E6B"], units:4, booked:[[0,3],[2,6],[8,10]], am:["wifi","ac"], blurb:"A calm, quiet room overlooking the courtyard garden." },
+  { id:2, name:"Deluxe City View", type:"Deluxe", price:165, sleeps:3, size:32, bed:"1 king bed + sofa", icon:"🏙️", g:["#9CC3F0","#3C6DB5"], units:3, booked:[[1,5],[3,7],[4,9]], am:["wifi","breakfast","ac"], blurb:"High-floor room with floor-to-ceiling windows and a work desk." },
+  { id:3, name:"Ocean View Double", type:"Deluxe", price:210, sleeps:2, size:36, bed:"2 double beds", icon:"🌊", g:["#8FDCE8","#1A7F96"], units:2, booked:[[0,14]], am:["wifi","breakfast","balcony","ac"], blurb:"Wake up to the harbour from your own private balcony." },
+  { id:4, name:"Family Suite", type:"Suite", price:260, sleeps:5, size:55, bed:"1 king + 2 single beds", icon:"👨‍👩‍👧", g:["#F7D79A","#D18B1F"], units:2, booked:[[2,5],[3,8]], am:["wifi","breakfast","kitchen","pool","ac"], blurb:"Two rooms and a kitchenette, made for families and small groups." },
+  { id:5, name:"Executive Suite", type:"Suite", price:340, sleeps:3, size:62, bed:"1 king bed", icon:"🥂", g:["#C9B6F0","#6B4BB0"], units:2, booked:[[5,9]], am:["wifi","breakfast","spa","pool","parking","balcony","ac"], blurb:"Separate lounge, soaking tub and lounge access for two." },
+  { id:6, name:"Harbour Penthouse", type:"Suite", price:520, sleeps:4, size:110, bed:"2 king beds", icon:"👑", g:["#F2A8A0","#A8433A"], units:1, booked:[[6,8]], am:["wifi","breakfast","spa","pool","parking","kitchen","balcony","ac"], blurb:"Top-floor terrace, private dining room and a dedicated host." }
+];
+const TAX = 0.12, CLEAN = 25;
+
+/* ---------- Helpers ---------- */
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const parse = s => new Date(s + "T00:00:00");
+const nightsBetween = (a,b) => Math.round((parse(b) - parse(a)) / 864e5);
+const nice = s => parse(s).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+const money = n => "$" + n.toLocaleString("en-US",{minimumFractionDigits:0,maximumFractionDigits:2});
+const TODAY = new Date(); TODAY.setHours(0,0,0,0);
+
+function availability(room, checkIn, checkOut) {
+  const a = nightsBetween(iso(TODAY), checkIn), b = nightsBetween(iso(TODAY), checkOut);
+  const taken = room.booked.filter(([s,e]) => a < e && b > s).length;
+  return Math.max(0, room.units - taken);
+}
+function quote(room, nights) {
+  const sub = room.price * nights, tax = Math.round(sub * TAX * 100) / 100;
+  return { sub, tax, clean: CLEAN, total: sub + tax + CLEAN };
+}
+
+/* ---------- Components ---------- */
+function Stepper({ label, value, min, max, onChange }) {
+  return html`<div class="f"><label>${label}</label>
+    <div class="stepper" role="group" aria-label=${label}>
+      <button type="button" aria-label=${"Fewer " + label} disabled=${value <= min} onClick=${() => onChange(value - 1)}>−</button>
+      <span aria-live="polite">${value}</span>
+      <button type="button" aria-label=${"More " + label} disabled=${value >= max} onClick=${() => onChange(value + 1)}>+</button>
+    </div></div>`;
+}
+
+function RoomCard({ room, nights, left, guests, onBook }) {
+  const fits = guests <= room.sleeps;
+  const soldOut = left === 0, ok = !soldOut && fits;
+  const q = quote(room, nights);
+  let status = html`<span class="stat ok">Available</span>`;
+  if (!fits) status = html`<span class="stat bad">Sleeps up to ${room.sleeps} guests</span>`;
+  else if (soldOut) status = html`<span class="stat bad">Sold out for these dates</span>`;
+  else if (left <= 2) status = html`<span class="stat warn">Only ${left} left</span>`;
+  return html`<article class=${"card" + (ok ? "" : " out")}>
+    <div class="pic" style=${{background:`linear-gradient(135deg,${room.g[0]},${room.g[1]})`}} aria-hidden="true">
+      <span class="tag">${room.type}</span><span>${room.icon}</span>
+    </div>
+    <div class="body">
+      <h3>${room.name}</h3>
+      <p>${room.blurb} ${room.size} m² · ${room.bed} · sleeps ${room.sleeps}.</p>
+      <div class="badges" aria-label="Amenities">${room.am.map(k => html`<span class="badge" key=${k}>${AMEN[k]}</span>`)}</div>
+      <div class="buy">
+        <div class="price"><b>${money(room.price)}</b> <span>/ night</span>
+          <div>${nights} night${nights > 1 ? "s" : ""}: ${money(q.sub)} + taxes & fees</div>
+          ${status}</div>
+        <button class="btn sun" disabled=${!ok} onClick=${() => onBook(room)}>Check availability</button>
+      </div>
+    </div></article>`;
+}
+
+function BookingModal({ room, search, onClose }) {
+  const [step, setStep] = useState("review");
+  const [form, setForm] = useState({ name:"", email:"" });
+  const [errors, setErrors] = useState({});
+  const [ref, setRef] = useState("");
+  const nights = nightsBetween(search.checkIn, search.checkOut);
+  const q = quote(room, nights);
+  const first = useRef(null);
+  useEffect(() => {
+    first.current && first.current.focus();
+    const onKey = e => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  const confirm = e => {
+    e.preventDefault();
+    const er = {};
+    if (form.name.trim().length < 2) er.name = "Enter the guest's full name.";
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) er.email = "Enter a valid email, like name@example.com.";
+    setErrors(er);
+    if (Object.keys(er).length) return;
+    setRef("HB-" + Math.random().toString(36).slice(2, 8).toUpperCase());
+    setStep("done");
+  };
+  const set = k => e => setForm({ ...form, [k]: e.target.value });
+  return html`<div class="scrim" onClick=${e => e.target === e.currentTarget && onClose()}>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+    ${step === "review" ? html`
+      <form onSubmit=${confirm} noValidate>
+        <h2 id="mt">Confirm your stay</h2>
+        <p class="stat ok" style=${{margin:0}}>✔ ${room.name} is available for your dates.</p>
+        <div class="sum">
+          <div class="row"><span>Check-in</span><b>${nice(search.checkIn)}</b></div>
+          <div class="row"><span>Check-out</span><b>${nice(search.checkOut)}</b></div>
+          <div class="row"><span>Guests</span><b>${search.adults} adult${search.adults > 1 ? "s" : ""}${search.children ? `, ${search.children} child${search.children > 1 ? "ren" : ""}` : ""}</b></div>
+          <div class="row"><span>${money(room.price)} × ${nights} night${nights > 1 ? "s" : ""}</span><span>${money(q.sub)}</span></div>
+          <div class="row"><span>Taxes (12%)</span><span>${money(q.tax)}</span></div>
+          <div class="row"><span>Cleaning fee</span><span>${money(q.clean)}</span></div>
+          <div class="row total"><span>Total</span><span>${money(q.total)}</span></div>
+        </div>
+        <div class="mf">
+          <div><input ref=${first} placeholder="Full name" aria-label="Full name" value=${form.name} onInput=${set("name")} aria-invalid=${!!errors.name}/>
+            ${errors.name && html`<p class="err">${errors.name}</p>`}</div>
+          <div><input type="email" placeholder="Email for confirmation" aria-label="Email" value=${form.email} onInput=${set("email")} aria-invalid=${!!errors.email}/>
+            ${errors.email && html`<p class="err">${errors.email}</p>`}</div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn ghost" onClick=${onClose}>Back to rooms</button>
+          <button type="submit" class="btn">Book for ${money(q.total)}</button>
+        </div>
+      </form>` : html`
+      <div class="done">
+        <div class="tick" aria-hidden="true">✓</div>
+        <h2 id="mt">Booking confirmed</h2>
+        <p>Thanks, ${form.name.split(" ")[0]}. We sent the details to ${form.email}.</p>
+        <p>Reference<br/><span class="ref">${ref}</span></p>
+        <p>${room.name}, ${nice(search.checkIn)} to ${nice(search.checkOut)}<br/>Total ${money(q.total)}</p>
+        <div class="actions" style=${{justifyContent:"center"}}><button class="btn" ref=${first} onClick=${onClose}>Done</button></div>
+      </div>`}
+    </div></div>`;
+}
+
+function App() {
+  const [draft, setDraft] = useState({ checkIn: iso(addDays(TODAY,2)), checkOut: iso(addDays(TODAY,5)), adults:2, children:0 });
+  const [search, setSearch] = useState(draft);
+  const [error, setError] = useState("");
+  const [type, setType] = useState("All");
+  const [maxPrice, setMaxPrice] = useState(600);
+  const [amen, setAmen] = useState([]);
+  const [sort, setSort] = useState("recommended");
+  const [openRoom, setOpenRoom] = useState(null);
+
+  const upd = (k, v) => {
+    const next = { ...draft, [k]: v };
+    if (k === "checkIn" && next.checkOut <= v) next.checkOut = iso(addDays(parse(v), 1));
+    setDraft(next); setError("");
+  };
+  const submit = e => {
+    e.preventDefault();
+    if (!draft.checkIn || !draft.checkOut) return setError("Pick both a check-in and a check-out date.");
+    if (parse(draft.checkIn) < TODAY) return setError("Check-in can't be in the past.");
+    if (nightsBetween(draft.checkIn, draft.checkOut) < 1) return setError("Check-out must be after check-in.");
+    if (nightsBetween(draft.checkIn, draft.checkOut) > 30) return setError("Stays are limited to 30 nights.");
+    setSearch(draft);
+  };
+  const toggle = k => setAmen(a => a.includes(k) ? a.filter(x => x !== k) : [...a, k]);
+  const nights = nightsBetween(search.checkIn, search.checkOut);
+  const guests = search.adults + search.children;
+
+  const list = useMemo(() => {
+    let r = ROOMS.filter(x => (type === "All" || x.type === type) && x.price <= maxPrice && amen.every(a => x.am.includes(a)));
+    const withLeft = r.map(x => ({ room: x, left: availability(x, search.checkIn, search.checkOut) }));
+    const rank = o => (o.left > 0 && guests <= o.room.sleeps ? 0 : 1);
+    withLeft.sort((a, b) => rank(a) - rank(b) || (sort === "low" ? a.room.price - b.room.price : sort === "high" ? b.room.price - a.room.price : 0));
+    return withLeft;
+  }, [type, maxPrice, amen, sort, search, guests]);
+
+  return html`<div>
+    <header class="top"><div class="wrap">
+      <div class="nav"><span>Harbourline Hotel</span><small>Free cancellation up to 48 hours before check-in</small></div>
+      <div class="hero"><h1>Stay on the water, ten minutes from everything.</h1>
+        <p>Pick your dates and see what's open. Prices include everything except taxes and the cleaning fee until you confirm.</p></div>
+    </div></header>
+    <main class="wrap">
+      <form class="search" onSubmit=${submit} noValidate aria-label="Search rooms">
+        <div class="f"><label for="ci">Check-in</label><input id="ci" type="date" min=${iso(TODAY)} value=${draft.checkIn} onChange=${e => upd("checkIn", e.target.value)}/></div>
+        <div class="f"><label for="co">Check-out</label><input id="co" type="date" min=${draft.checkIn} value=${draft.checkOut} onChange=${e => upd("checkOut", e.target.value)}/></div>
+        <${Stepper} label="Adults" value=${draft.adults} min=${1} max=${6} onChange=${v => upd("adults", v)}/>
+        <${Stepper} label="Children" value=${draft.children} min=${0} max=${4} onChange=${v => upd("children", v)}/>
+        <button class="btn" type="submit">Search rooms</button>
+        ${error && html`<p class="err" style=${{gridColumn:"1/-1",margin:0}} role="alert">${error}</p>`}
+      </form>
+      <p class="stay">${nice(search.checkIn)} to ${nice(search.checkOut)} · ${nights} night${nights > 1 ? "s" : ""} · ${guests} guest${guests > 1 ? "s" : ""}</p>
+      <div class="layout">
+        <aside class="filters" aria-label="Filters">
+          <h2>Filter rooms</h2>
+          <fieldset><legend>Room type</legend>
+            <div class="chips">${["All","Standard","Deluxe","Suite"].map(t => html`<button type="button" key=${t} class="chip" aria-pressed=${type === t} onClick=${() => setType(t)}>${t}</button>`)}</div></fieldset>
+          <fieldset><legend>Max price: ${money(maxPrice)} / night</legend>
+            <input type="range" min="100" max="600" step="10" value=${maxPrice} onInput=${e => setMaxPrice(+e.target.value)} aria-label="Maximum price per night"/></fieldset>
+          <fieldset><legend>Amenities</legend>
+            ${Object.entries(AMEN).map(([k, v]) => html`<label class="chk" key=${k}><input type="checkbox" checked=${amen.includes(k)} onChange=${() => toggle(k)}/>${v}</label>`)}</fieldset>
+          <button type="button" class="btn ghost" onClick=${() => { setType("All"); setMaxPrice(600); setAmen([]); }}>Clear filters</button>
+        </aside>
+        <section class="results" aria-live="polite">
+          <div class="rhead"><h2>${list.length} room type${list.length === 1 ? "" : "s"} found</h2>
+            <select value=${sort} onChange=${e => setSort(e.target.value)} aria-label="Sort rooms">
+              <option value="recommended">Recommended</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></div>
+          ${list.length ? html`<div class="cards">${list.map(({ room, left }) => html`<${RoomCard} key=${room.id} room=${room} left=${left} nights=${nights} guests=${guests} onBook=${setOpenRoom}/>`)}</div>`
+            : html`<div class="empty"><h3>No rooms match these filters</h3><p>Raise the price limit or remove an amenity to see more rooms.</p></div>`}
+        </section>
+      </div>
+    </main>
+    ${openRoom && html`<${BookingModal} room=${openRoom} search=${search} onClose=${() => setOpenRoom(null)}/>`}
+  </div>`;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(html`<${App}/>`);
+</script>
+</body>
+</html>
